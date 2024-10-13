@@ -14,7 +14,7 @@ async def verify_api_key(x_api_key: str = Header(...)):
 
 # Initialize the wallet outside of the endpoint functions
 wallet = Wallet()
-asyncio.run(wallet.load_mint("https://yourchosenmint.com"))
+asyncio.run(wallet.load_mint("https://boardwalkcash.com/"))
 
 # Endpoint for sending ecash
 @app.post("/send")
@@ -40,3 +40,4 @@ async def receive_ecash(user_id: str, token: str, api_key: str = Depends(verify_
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
