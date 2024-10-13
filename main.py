@@ -1,7 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Header
 from cashu.wallet.wallet import Wallet
-from cashu.wallet.db import MemoryDatabase
-from fastapi import Depends, Header
+from cashu.core.db.memory import MemoryDatabase
+from fastapi import 
 import asyncio
 
 app = FastAPI()
@@ -13,10 +13,16 @@ async def verify_api_key(x_api_key: str = Header(...)):
     if x_api_key not in API_KEYS:
         raise HTTPException(status_code=401, detail="Invalid API Key")
 
-# Initialize the wallet outside of the endpoint functions
-wallet_db = MemoryDatabase()
-wallet = Wallet(url="https://boardwalkcash.com", db=wallet_db)
-asyncio.run(wallet.load_mint())
+# Dictionary to store user wallets
+user_wallets = {}
+
+def get_user_wallet(user_id):
+    if user_id not in user_wallets:
+        wallet_db = MemoryDatabase()
+        user_wallet = Wallet(url="https://boardwalkcash.com", db=wallet_db)
+        asyncio.run(user_wallet.load_mint())
+        user_wallets[user_id] = user_wallet
+    return user_wallets[user_id]
 
 # Endpoint for sending ecash
 @app.post("/send")
