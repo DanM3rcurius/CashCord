@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends, Header
 from cashu.wallet.wallet import Wallet
 from cashu.core.db.memory import MemoryDatabase
-from fastapi import 
 import asyncio
 
 app = FastAPI()
