@@ -5,7 +5,7 @@ import asyncio
 app = FastAPI()
 
 # API Key Authentication
-API_KEYS = ["your_api_key_here"]  # Replace with actual key from Agent (AIDE)!
+API_KEYS = ["CC-test"]  # Replace with actual key from Agent (AIDE)!
 
 async def verify_api_key(x_api_key: str = Header(...)):
     if x_api_key not in API_KEYS:
