@@ -23,9 +23,14 @@ def get_user_wallet(user_id):
         user_wallets[user_id] = user_wallet
     return user_wallets[user_id]
 
-# Endpoint for sending ecash
+# Endpoint for sending and automatically receiving ecash
 @app.post("/send")
-async def send_ecash(user_id: str, amount: int, recipient_id: str, api_key: str = Depends(verify_api_key)):
+async def send_ecash(
+    user_id: str,
+    amount: int,
+    recipient_id: str,
+    api_key: str = Depends(verify_api_key)
+):
     try:
         sender_wallet = get_user_wallet(user_id)
         recipient_wallet = get_user_wallet(recipient_id)
@@ -41,26 +46,17 @@ async def send_ecash(user_id: str, amount: int, recipient_id: str, api_key: str 
         # Recipient receives ecash
         await recipient_wallet.receive(token["token"])
 
-        return {"status": "success", "token": token["token"]}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        # Notify the recipient (this could be a call to your Discord agent)
+        # For example:
+        # send_discord_message(recipient_id, "You have received a tip of {} units!".format(amount))
 
-
-# Endpoint for receiving ecash
-@app.post("/receive")
-async def receive_ecash(user_id: str, token: str, api_key: str = Depends(verify_api_key)):
-    try:
-        # Get the recipient's wallet
-        recipient_wallet = get_user_wallet(user_id)
-        # Add ecash to recipient's wallet
-        await recipient_wallet.receive(token)
-        
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
-# Endpoint tot Check user wallet balance 
+
+# Endpoint to Check user wallet balance 
 @app.post("/balance")
 async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
     try:
