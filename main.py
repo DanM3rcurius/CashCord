@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends, Header
 from cashu.wallet.wallet import Wallet, Database
+from pydantic import BaseModel
+
 import asyncio
 
 app = FastAPI()
@@ -23,14 +25,21 @@ def get_user_wallet(user_id):
         user_wallets[user_id] = user_wallet
     return user_wallets[user_id]
 
+## defining json body
+class SendRequest(BaseModel):
+    user_id: str
+    amount: int
+    recipient_id: str
+
 # Endpoint for sending and automatically receiving ecash
 @app.post("/send")
 async def send_ecash(
-    user_id: str,
-    amount: int,
-    recipient_id: str,
+    send_request: SendRequest,
     api_key: str = Depends(verify_api_key)
 ):
+    user_id = send_request.user_id
+    amount = send_request.amount
+    recipient_id = send_request.recipient_id
     try:
         sender_wallet = get_user_wallet(user_id)
         recipient_wallet = get_user_wallet(recipient_id)
