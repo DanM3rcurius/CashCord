@@ -21,7 +21,7 @@ def get_user_wallet(user_id):
         # init in memory db
         wallet_db = Database(db_name=":memory:", db_location=":memory:")
         # init wallet w/o mint url
-        user_wallet = Wallet(db=wallet_db)
+        user_wallet = Wallet(db=wallet_db, url="https://stablenut.umint.cash")
         # Load the mint asynchronously
         asyncio.run(user_wallet.load_mint("https://stablenut.umint.cash"))
         # store init wallet for user
