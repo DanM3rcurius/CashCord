@@ -18,7 +18,7 @@ user_wallets = {}
 
 def get_user_wallet(user_id):
     if user_id not in user_wallets:
-        wallet_db = Database()
+        wallet_db = Database(db_name=":memory:", db_location=":memory:")
         user_wallet = Wallet(db=wallet_db, mint_url="https://stablenut.umint.cash")
         # Load the mint asynchronously
         asyncio.run(user_wallet.load_mint())
