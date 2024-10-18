@@ -55,11 +55,14 @@ async def send_ecash(
         if balance.available < amount:
             raise HTTPException(status_code=400, detail="Insufficient funds")
 
-        # Sender sends ecash
-        token = await sender_wallet.send(amount)
-
+        # Select proofs to send
+        proofs_to_send, remainder_proofs = await sender_wallet.select_to_send(amount)
+        # Serialize proofs into a token
+        token = sender_wallet.send_proofs(proofs_to_send)
+        
         # Recipient receives ecash
-        await recipient_wallet.receive(token["token"])
+        await recipient_wallet.receive(token) 
+        print(f"Token sent: {token}")  # This should output the token, not an integer
 
         # Notify the recipient (this could be a call to your Discord agent)
         # For example:
