@@ -114,7 +114,7 @@ async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_
 @app.post("/balance")
 async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
     try:
-        wallet = get_user_wallet(user_id)
+        wallet = await get_user_wallet(user_id)
         balance = await wallet.balance()
         return {"available": balance.available, "pending": balance.pending}
     except Exception as e:
