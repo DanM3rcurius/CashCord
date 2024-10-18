@@ -18,11 +18,12 @@ async def get_user_wallet(user_id):
     if user_id not in user_wallets:
         try:
             # init in memory db
-            wallet_db = Database(db_name=":memory:", db_location=":memory:")
+            db_path = ":memory:" # Use an in-memory database for simplicity
+            
             # Use Wallet.with_db to initialize the wallet with the mint URL and database
-            user_wallet = await Wallet.with_db(url="https://stablenut.umint.cash", db=wallet_db)
+            user_wallet = await Wallet.with_db(url="https://stablenut.umint.cash", db=db_path)
             # Load the mint asynchronously
-            await user_wallet.load_mint("https://stablenut.umint.cash")
+            await user_wallet.load_mint() 
             # store wallet in dic for future use
             user_wallets[user_id] = user_wallet
         except Exception as e:
