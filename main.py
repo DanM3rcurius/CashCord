@@ -93,7 +93,23 @@ async def request_invoice(user_id: str, amount: int, api_key: str = Depends(veri
     
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-        
+
+# Define the check receive endpoint
+@app.post("/receive")
+async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_api_key)):
+    try:
+        # Get the recipient wallet (the test wallet on this device)
+        recipient_wallet = await get_user_wallet(user_id)
+
+        # Receive a token from another wallet (token would be sent from another device)
+        await recipient_wallet.receive(token)
+
+        print("Token received successfully!")
+        return {"status": "success", "message": "Token received and ecash added to wallet"}
+    
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # Endpoint to Check user wallet balance 
 @app.post("/balance")
 async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
