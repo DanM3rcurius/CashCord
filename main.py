@@ -20,7 +20,7 @@ async def get_user_wallet(user_id):
             # init in memory db
             wallet_db = Database(db_name=":memory:", db_location=":memory:")
             # Use Wallet.with_db to initialize the wallet with the mint URL and database
-            user_wallet = Wallet.with_db(url="https://stablenut.umint.cash", db=wallet_db)
+            user_wallet = await Wallet.with_db(url="https://stablenut.umint.cash", db=wallet_db)
             # Load the mint asynchronously
             await user_wallet.load_mint("https://stablenut.umint.cash")
             # store wallet in dic for future use
