@@ -2,8 +2,6 @@ from fastapi import FastAPI, HTTPException, Depends, Header
 from cashu.wallet.wallet import Wallet, Database
 from pydantic import BaseModel
 
-import asyncio
-
 app = FastAPI()
 
 # API Key Authentication
@@ -16,16 +14,20 @@ async def verify_api_key(x_api_key: str = Header(...)):
 # Dictionary to store user wallets
 user_wallets = {}
 
-def get_user_wallet(user_id):
+async def get_user_wallet(user_id):
     if user_id not in user_wallets:
-        # init in memory db
-        wallet_db = Database(db_name=":memory:", db_location=":memory:")
-        # Use Wallet.with_db to initialize the wallet with the mint URL and database
-        user_wallet = Wallet.with_db(url="https://stablenut.umint.cash", db=wallet_db)
-        # Load the mint asynchronously
-        asyncio.run(user_wallet.load_mint("https://stablenut.umint.cash"))
-        # store init wallet for user
-        user_wallets[user_id] = user_wallet
+        try:
+            # init in memory db
+            wallet_db = Database(db_name=":memory:", db_location=":memory:")
+            # Use Wallet.with_db to initialize the wallet with the mint URL and database
+            user_wallet = Wallet.with_db(url="https://stablenut.umint.cash", db=wallet_db)
+            # Load the mint asynchronously
+            await user_wallet.load_mint("https://stablenut.umint.cash")
+            # store wallet in dic for future use
+            user_wallets[user_id] = user_wallet
+        except Exception as e:
+            print(f"Error initializing wallet for user {user_id}: {e}")
+            raise
     return user_wallets[user_id]
 
 ## defining json body
@@ -44,8 +46,8 @@ async def send_ecash(
     amount = send_request.amount
     recipient_id = send_request.recipient_id
     try:
-        sender_wallet = get_user_wallet(user_id)
-        recipient_wallet = get_user_wallet(recipient_id)
+        sender_wallet = await get_user_wallet(user_id)
+        recipient_wallet = await get_user_wallet(recipient_id)
 
         # Check if sender has enough balance
         balance = await sender_wallet.balance()
