@@ -13,12 +13,12 @@ async def verify_api_key(x_api_key: str = Header(...)):
 
 # Dictionary to store user wallets
 user_wallets = {}
+# define get_user_wallet function
 async def get_user_wallet(user_id):
     if user_id not in user_wallets:
         try:
             # init in memory db
             db_path = ":memory:" # Use an in-memory database for simplicity
-            
             # Use Wallet.with_db to initialize the wallet with the mint URL and database
             user_wallet = await Wallet.with_db(url="https://stablenut.umint.cash", db=db_path)
             # Load the mint asynchronously
