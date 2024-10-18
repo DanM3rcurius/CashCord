@@ -98,7 +98,7 @@ async def request_invoice(user_id: str, amount: int, api_key: str = Depends(veri
 @app.post("/receive")
 async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_api_key)):
     try:
-        # Get the recipient wallet (the test wallet on this device)
+        # Get the recipient wallet 
         recipient_wallet = await get_user_wallet(user_id)
 
         # Load proofs (receive tokens) from another wallet
