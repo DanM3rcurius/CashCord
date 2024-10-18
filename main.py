@@ -26,9 +26,6 @@ def get_user_wallet(user_id):
         asyncio.run(user_wallet.load_mint("https://stablenut.umint.cash"))
         # store init wallet for user
         user_wallets[user_id] = user_wallet
-    except Exception as e:
-        print(f"Error initializing wallet for user {user_id}: {e}")
-        raise
     return user_wallets[user_id]
 
 ## defining json body
