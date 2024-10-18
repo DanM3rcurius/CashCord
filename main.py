@@ -92,7 +92,8 @@ async def request_invoice(user_id: str, amount: int, api_key: str = Depends(veri
         return {"status": "invoice_created", "invoice": invoice}
     
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e)
+        raise HTTPException(status_code=400, detail=str(e))
+        
 # Endpoint to Check user wallet balance 
 @app.post("/balance")
 async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
