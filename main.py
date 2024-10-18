@@ -101,8 +101,8 @@ async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_
         # Get the recipient wallet (the test wallet on this device)
         recipient_wallet = await get_user_wallet(user_id)
 
-        # Receive a token from another wallet (token would be sent from another device)
-        await recipient_wallet.receive(token)
+        # Load proofs (receive tokens) from another wallet
+        await recipient_wallet.load_proofs(token)
 
         print("Token received successfully!")
         return {"status": "success", "message": "Token received and ecash added to wallet"}
