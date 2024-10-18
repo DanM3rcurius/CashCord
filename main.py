@@ -26,6 +26,9 @@ async def get_user_wallet(user_id):
             await user_wallet.load_mint() 
             # store wallet in dic for future use
             user_wallets[user_id] = user_wallet
+            # print / log wallet
+            print(f"Wallet created for user: {user_id}")
+        # error handling
         except Exception as e:
             print(f"Error initializing wallet for user {user_id}: {e}")
             raise
