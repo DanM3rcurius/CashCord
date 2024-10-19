@@ -31,7 +31,7 @@ async def get_user_wallet(user_id):
         except Exception as e:
             print(f"Error initializing wallet for user {user_id}: {e}")
             raise
-    return user_wallets[user_id]
+    return JSONResponse (content=user_wallets[user_id])
 
 ## defining json body
 class SendRequest(BaseModel):
