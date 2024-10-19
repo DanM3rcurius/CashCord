@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException, Depends, Header JSONResponse
+from fastapi import FastAPI, HTTPException, Depends, Header
+from fastapi.responses import JSONResponse
 from cashu.wallet.wallet import Wallet, Database
 from pydantic import BaseModel
 
