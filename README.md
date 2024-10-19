@@ -4,7 +4,7 @@ a discord tipping bot for ecash
 
 ## install dependencies
 ``` bash
-pip install fastapi uvicorn cashu
+pip install fastapi uvicorn cashu ngrok
 ``` 
 
 Thanks to [CashuBTC](https://github.com/cashubtc/nutshell) for their NutShell implementation.
