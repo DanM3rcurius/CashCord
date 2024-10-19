@@ -34,11 +34,17 @@ async def get_user_wallet(user_id):
             raise
     return JSONResponse (content=user_wallets[user_id])
 
-## defining json body
+## defining json body for send request
 class SendRequest(BaseModel):
     user_id: str
     amount: int
     recipient_id: str
+
+# Define the model to accept user_id and token from the request body
+class ReceiveRequest(BaseModel):
+    user_id: str
+    token: str
+
 
 # Endpoint for sending and automatically receiving ecash
 @app.post("/send")
