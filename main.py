@@ -40,11 +40,6 @@ class SendRequest(BaseModel):
     amount: int
     recipient_id: str
 
-# Define the model to accept user_id and token from the request body
-class ReceiveRequest(BaseModel):
-    user_id: str
-    token: str
-
 
 # Endpoint for sending and automatically receiving ecash
 @app.post("/send")
@@ -103,11 +98,8 @@ async def request_invoice(user_id: str, amount: int, api_key: str = Depends(veri
 
 # Define the check receive endpoint
 @app.post("/receive")
-async def check_receive(data: ReceiveRequest, api_key: str = Depends(verify_api_key)):
+async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_api_key)):
     try:
-        # Extract user_id and token from the request body 
-        user_id = data.user_id
-        token = data.token
         # Get the recipient wallet 
         recipient_wallet = await get_user_wallet(user_id)
 
