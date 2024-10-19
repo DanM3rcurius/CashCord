@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, Header
+from fastapi import FastAPI, HTTPException, Depends, Header JSONResponse
 from cashu.wallet.wallet import Wallet, Database
 from pydantic import BaseModel
 
@@ -89,7 +89,7 @@ async def request_invoice(user_id: str, amount: int, api_key: str = Depends(veri
         invoice = await recipient_wallet.request_mint(amount)
         
         # Return the invoice to the client (so the sender can pay it)
-        return {"status": "invoice_created", "invoice": invoice}
+        return JSONResponse (content={"status": "invoice_created", "invoice": invoice})
     
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -106,7 +106,8 @@ async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_
 
         print("Token received successfully!")
         return {"status": "success", "message": "Token received and ecash added to wallet"}
-    
+        return JSONResponse(content={"status": "success"})
+
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -116,6 +117,7 @@ async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
     try:
         wallet = await get_user_wallet(user_id)
         balance = await wallet.balance()
-        return {"available": balance.available, "pending": balance.pending}
+        return JSONResponse (content={"available": balance.available, "pending": balance.pending})
+
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
