@@ -15,42 +15,53 @@ async def verify_api_key(x_api_key: str = Header(...)):
 # Dictionary to store user wallets
 user_wallets = {}
 # define get_user_wallet function
-async def get_user_wallet(user_id):
+async def get_user_wallet(user_id, persistent: bool = False):
     if user_id not in user_wallets:
         try:
-            # init in memory db
-            db_path = ":memory:" # Use an in-memory database for simplicity
+            # Use an in-memory or persistent database based on the context
+            db_path = f"user_wallets/{user_id}.db" if persistent else ":memory:"  # Persistent wallets have user-specific paths
+            
             # Use Wallet.with_db to initialize the wallet with the mint URL and database
             user_wallet = await Wallet.with_db(url="https://stablenut.umint.cash", db=db_path)
+            
             # Load the mint asynchronously
             await user_wallet.load_mint() 
+
             # store wallet in dic for future use
             user_wallets[user_id] = user_wallet
+
             # print / log wallet
-            print(f"Wallet created for user: {user_id}")
+            print(f"Wallet created for user: {user_id}, persistent={persistent}")
         # error handling
         except Exception as e:
             print(f"Error initializing wallet for user {user_id}: {e}")
             raise
-    return JSONResponse (content=user_wallets[user_id])
+        #   #return JSONResponse (content=user_wallets[user_id])
+            return user_wallets[user_id]  # FastAPI will handle JSON conversion - TEST!
+
+# Defining JSON body for tip and send requests
+class TipRequest(BaseModel):
+    user_id: str
+    amount: int
+    recipient_id: str
 
 ## defining json body for send request
 class SendRequest(BaseModel):
     user_id: str
     amount: int
-    recipient_id: str
+    recipient_wallet_address: str
 
-
-# Endpoint for sending and automatically receiving ecash
-@app.post("/send")
-async def send_ecash(
-    send_request: SendRequest,
+# Endpoint for tipping within the Discord server
+@app.post("/tip")
+async def tip_user(
+    tip_request: TipRequest,
     api_key: str = Depends(verify_api_key)
 ):
-    user_id = send_request.user_id
-    amount = send_request.amount
-    recipient_id = send_request.recipient_id
+    user_id = tip_request.user_id
+    amount = tip_request.amount
+    recipient_id = tip_request.recipient_id
     try:
+        # Get sender and recipient wallets (temporary in-memory)
         sender_wallet = await get_user_wallet(user_id)
         recipient_wallet = await get_user_wallet(recipient_id)
 
@@ -63,18 +74,56 @@ async def send_ecash(
 
         # Select proofs to send
         proofs_to_send, remainder_proofs = await sender_wallet.select_to_send(amount)
-        print(f"Proofs to send: {proofs_to_send}, Remainder proofs: {remainder_proofs}") #Debugging
+        print(f"Proofs to send: {proofs_to_send}, Remainder proofs: {remainder_proofs}")  # Debugging
 
         # Serialize proofs into a token
-        token = sender_wallet.send_proofs(proofs_to_send)
-        
+        token = sender_wallet.proofs_to_token(proofs_to_send)
+
         # Recipient receives ecash
-        await recipient_wallet.receive(token) 
+        await recipient_wallet.receive(token)
         print(f"Token generated: {token}")  # This should output the token, not an integer
 
         # Notify the recipient (this could be a call to your Discord agent)
+        # Example: send_discord_message(recipient_id, f"You have received a tip of {amount} units!")
+
+        return {"status": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# Endpoint for sending and automatically receiving ecash
+@app.post("/send")
+async def send_ecash(
+    send_request: SendRequest,
+    api_key: str = Depends(verify_api_key)
+):
+    user_id = send_request.user_id
+    amount = send_request.amount
+    recipient_wallet_address = send_request.recipient_wallet_address
+    
+    try:
+        # Get sender wallet (non persistent) #TODO: make persistent?
+        sender_wallet = await get_user_wallet(user_id)
+
+        # Check if sender has enough balance
+        balance = await sender_wallet.balance()
+        print(f"Balance: {balance}")
+
+        if balance.available < amount:
+            raise HTTPException(status_code=400, detail="Insufficient cash")
+
+        # Select proofs to send
+        proofs_to_send, remainder_proofs = await sender_wallet.select_to_send(amount)
+        print(f"Cash to send: {proofs_to_send}, Remainder Cash: {remainder_proofs}") #Debugging
+
+        # Serialize proofs into a token
+        token = sender_wallet.proofs_to_token(proofs_to_send)
+        
+        # utilizer receives ecash token
+        print(f"Token generated: {token}")  # This should output the token (integer!) in a Discord DM
+
+        # Notify the recipient (via Discord DM!) 
         # For example:
-        # send_discord_message(recipient_id, "You have received a tip of {} units!".format(amount))
+        # send_discord_message(recipient_id, "Here is your token to send out cash to an external wallet")
 
         return {"status": "success"}
     except Exception as e:
@@ -117,7 +166,7 @@ async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_
 @app.post("/balance")
 async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
     try:
-        wallet = await get_user_wallet(user_id)
+        wallet = await get_user_wallet(user_id, persistent=False)
         balance = await wallet.balance()
         return JSONResponse (content={"available": balance.available, "pending": balance.pending})
 
