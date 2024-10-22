@@ -44,13 +44,13 @@ async def get_user_wallet(user_id, persistent: bool = False):
 # Defining JSON body for tip and send requests
 class TipRequest(BaseModel):
     user_id: str
-    amount: int
+    amount: float
     recipient_id: str
 
 ## Defining JSON body for send request
 class SendRequest(BaseModel):
     user_id: str
-    amount: int
+    amount: float
     recipient_wallet_address: str
 
 # Endpoint to mint cashu tokens 
