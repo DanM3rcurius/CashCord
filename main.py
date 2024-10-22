@@ -14,6 +14,7 @@ async def verify_api_key(x_api_key: str = Header(...)):
 
 # Dictionary to store user wallets
 user_wallets = {}
+
 # define get_user_wallet function
 async def get_user_wallet(user_id, persistent: bool = False):
     if user_id not in user_wallets:
@@ -45,11 +46,27 @@ class TipRequest(BaseModel):
     amount: int
     recipient_id: str
 
-## defining json body for send request
+## Defining JSON body for send request
 class SendRequest(BaseModel):
     user_id: str
     amount: int
     recipient_wallet_address: str
+
+# Endpoint to mint cashu tokens 
+@app.post("/mint")
+async def mint_ecash(user_id: str, amount: int, api_key: str = Depends(verify_api_key)):
+    try:
+        # Get or create the user wallet (persistent)
+        user_wallet = await get_user_wallet(user_id, persistent=False)
+        
+        # Request a minting invoice (this will generate a Lightning invoice)
+        invoice = await user_wallet.request_mint(amount)
+        
+        # Return the invoice to the client (so the sender can pay it)
+        return JSONResponse(content={"status": "invoice_created", "invoice": invoice})
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 
 # Endpoint for tipping within the Discord server
 @app.post("/tip")
@@ -61,16 +78,18 @@ async def tip_user(
     amount = tip_request.amount
     recipient_id = tip_request.recipient_id
     try:
-        # Get sender and recipient wallets (temporary in-memory)
+        # Get sender wallet (temporary in-memory)
         sender_wallet = await get_user_wallet(user_id)
-        recipient_wallet = await get_user_wallet(recipient_id)
 
-        # Check if sender has enough balance
+        # Check if sender wallet has enough balance
         balance = await sender_wallet.balance()
+        if balance is None or balance.available < amount:
+            # If balance is insufficient, return error
+            return JSONResponse(content={"status": "error", "message": "Insufficient funds. Please mint or receive ecash to proceed."})
         print(f"Balance: {balance}")
-
-        if balance.available < amount:
-            raise HTTPException(status_code=400, detail="Insufficient funds")
+        
+        # Get recipient wallet
+        recipient_wallet = await get_user_wallet(recipient_id)
 
         # Select proofs to send
         proofs_to_send, remainder_proofs = await sender_wallet.select_to_send(amount)
@@ -81,7 +100,7 @@ async def tip_user(
 
         # Recipient receives ecash
         await recipient_wallet.receive(token)
-        print(f"Token generated: {token}")  # This should output the token, not an integer
+        print(f"Token generated: {token}") # This should output the token, not an integer
 
         # Notify the recipient (this could be a call to your Discord agent)
         # Example: send_discord_message(recipient_id, f"You have received a tip of {amount} units!")
