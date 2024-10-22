@@ -82,6 +82,10 @@ async def tip_user(
         # Get sender wallet (temporary in-memory)
         sender_wallet = await get_user_wallet(user_id)
 
+        # Check if the sender wallet is initialized
+        if sender_wallet is None:
+            raise HTTPException(status_code=400, detail="Sender wallet not found. Please create a wallet first.")
+
         # Check if sender wallet has enough balance
         balance = await sender_wallet.balance()
         if balance is None or balance.available < amount:
@@ -91,6 +95,10 @@ async def tip_user(
         
         # Get recipient wallet
         recipient_wallet = await get_user_wallet(recipient_id)
+
+                # Check if the recipient wallet is initialized
+        if recipient_wallet is None:
+            raise HTTPException(status_code=400, detail="Recipient wallet not found. Please create a wallet first.")
 
         # Select proofs to send
         proofs_to_send, remainder_proofs = await sender_wallet.select_to_send(amount)
