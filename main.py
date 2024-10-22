@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends, Header
 from fastapi.responses import JSONResponse
 from cashu.wallet.wallet import Wallet, Database
 from pydantic import BaseModel
+from typing import Any
 
 app = FastAPI()
 
@@ -72,12 +73,16 @@ async def mint_ecash(user_id: str, amount: int, api_key: str = Depends(verify_ap
 # Endpoint for tipping within the Discord server
 @app.post("/tip")
 async def tip_user(
-    tip_request: TipRequest,
+    tip_request: Any,
     api_key: str = Depends(verify_api_key)
 ):
-    user_id = tip_request.user_id
-    amount = tip_request.amount
-    recipient_id = tip_request.recipient_id
+    # Extract required data from the incoming object
+    try:
+        user_id = tip_request["user_id"]
+        amount = tip_request["amount"]
+        recipient_id = tip_request["recipient_id"]
+    except KeyError as e:
+        raise HTTPException(status_code=400, detail=f"Missing key: {e}")
     try:
         # Step1: Get sender wallet (temporary in-memory)
         print(f"Attempting to get or create sender wallet for gigabrain: {user_id}")
