@@ -168,10 +168,10 @@ async def send_ecash(
     
     try:
         # Get sender wallet (non persistent) #TODO: make persistent?
-        sender_wallet = await get_user_wallet(user_id)
+        sender_wallet = get_user_wallet(user_id)
 
         # Check if sender has enough balance
-        balance = await sender_wallet.balance
+        balance = sender_wallet.balance
         print(f"Balance: {balance}")
 
         if balance.available < amount:
