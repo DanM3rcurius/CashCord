@@ -208,7 +208,7 @@ async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_
         raise HTTPException(status_code=400, detail=str(e))
 
 # Endpoint to Check gigabrain wallet balance 
-@app.post("/balance")
+@app.post("/get_balance")
 async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
     try:
         wallet = await get_user_wallet(user_id, persistent=False)
