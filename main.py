@@ -79,19 +79,29 @@ async def tip_user(
     amount = tip_request.amount
     recipient_id = tip_request.recipient_id
     try:
-        # Get sender wallet (temporary in-memory)
+        # Step1: Get sender wallet (temporary in-memory)
         print(f"Attempting to get or create sender wallet for gigabrain: {user_id}")
         sender_wallet = await get_user_wallet(user_id)
-
         # Check if the sender wallet is initialized
         if sender_wallet is None:
             raise HTTPException(status_code=400, detail="Sender wallet not found. Please create a wallet first.")
         print(f"Sender wallet successfully created for gigabrain: {user_id}")
 
-        # Check if sender wallet has enough balance
+        # Step2: Get or create recipient wallet
+        print(f"Attempting to get or create recipient wallet for user: {recipient_id}")
+        recipient_wallet = await get_user_wallet(recipient_id)
+        # Check if the recipient wallet is initialized
+        if recipient_wallet is None:
+            raise HTTPException(status_code=400, detail="Recipient wallet not found. Please create a wallet first.")
+        print(f"Recipient wallet successfully created for user: {recipient_id}")
+     
+        # Step3: Check if sender wallet has enough balance
         balance = await sender_wallet.balance()
         if balance is None:
             raise HTTPException(status_code=400, detail="Failed to retrieve sender wallet balance.")
+        # Ensure balance is a accessed correctly
+        print(f"Sender wallet balance: available={balance.available}, pending={balance.pending}")
+
         if balance.available == 0:
             # If balance is zero, prompt the gigabrain to add funds
             return JSONResponse(
@@ -104,24 +114,17 @@ async def tip_user(
             )
         print(f"Sender wallet balance is sufficient: {balance.available}")
         
-        # Get or create recipient wallet
-        print(f"Attempting to get or create recipient wallet for user: {recipient_id}")
-        recipient_wallet = await get_user_wallet(recipient_id)
 
-        # Check if the recipient wallet is initialized
-        if recipient_wallet is None:
-            raise HTTPException(status_code=400, detail="Recipient wallet not found. Please create a wallet first.")
-        print(f"Recipient wallet successfully created for user: {recipient_id}")
 
-        # Select proofs to send
+        # Step4: Select proofs to send
         proofs_to_send, remainder_proofs = await sender_wallet.select_to_send(amount)
         print(f"Proofs to send: {proofs_to_send}, Remainder proofs: {remainder_proofs}")  # Debugging
 
-        # Serialize proofs into a token
+        # Step5: Serialize proofs into a token
         token = sender_wallet.proofs_to_token(proofs_to_send)
         print(f"Token serialized successfully")
 
-        # Recipient receives ecash
+        # Step6: Recipient receives ecash
         await recipient_wallet.receive(token)
         print(f"Token generated: {token}") # This should output the token , not an integer
 
@@ -132,7 +135,7 @@ async def tip_user(
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# Endpoint for sending and automatically receiving ecash
+# Endpoint for sending ecash to an external/persisten wallet 
 @app.post("/send")
 async def send_ecash(
     send_request: SendRequest,
