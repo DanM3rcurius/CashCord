@@ -20,7 +20,7 @@ async def get_user_wallet(user_id, persistent: bool = False):
     if user_id not in user_wallets:
         try:
             # Use an in-memory or persistent database based on the context
-            db_path = f"user_wallets/{user_id}.db" if persistent else ":memory:"  # Persistent wallets have user-specific paths
+            db_path = f"user_wallets/{user_id}.db" if persistent else ":memory:"  # Persistent wallets have user-specific paths (DANGERZONE)
             
             # Use Wallet.with_db to initialize the wallet with the mint URL and database
             user_wallet = await Wallet.with_db(url="https://stablenut.umint.cash", db=db_path)
@@ -36,9 +36,10 @@ async def get_user_wallet(user_id, persistent: bool = False):
         # error handling
         except Exception as e:
             print(f"Error initializing wallet for user {user_id}: {e}")
-            raise
-        #   #return JSONResponse (content=user_wallets[user_id])
-            return user_wallets[user_id]  # FastAPI will handle JSON conversion - TEST!
+            raise HTTPException(status_code=500, detail=f"Error initializing wallet for user {user_id}: {str(e)}")
+
+        ##Depreceated(=?):   return JSONResponse (content=user_wallets[user_id])
+    return user_wallets.get(user_id)  # Ensure that the wallet object is always returned, either created or existing
 
 # Defining JSON body for tip and send requests
 class TipRequest(BaseModel):
