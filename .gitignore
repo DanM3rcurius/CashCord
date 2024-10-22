@@ -1,0 +1,8 @@
+# Ignore everything in the root
+# /*
+
+# Un-ignore a specific folder
+!/subtree/
+
+# Ignore a specific folder and its contents
+./:memory:
