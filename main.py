@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends, Header
 from fastapi.responses import JSONResponse
 from cashu.wallet.wallet import Wallet, Database
 from pydantic import BaseModel
-from fastapi import Body
+from fastapi import Body, HTTPException, Depends
 
 app = FastAPI()
 
@@ -78,9 +78,9 @@ async def tip_user(
 ):
     # Extract required data from the incoming object
     try:
-        user_id = tip_request["user_id"]
-        amount = tip_request["amount"]
-        recipient_id = tip_request["recipient_id"]
+        user_id = tip_request.get("user_id")
+        amount = tip_request.get("amount")
+        recipient_id = tip_request.get("recipient_id")
     except KeyError as e:
         raise HTTPException(status_code=400, detail=f"Missing key: {e}")
     try:
