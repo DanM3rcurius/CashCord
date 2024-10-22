@@ -99,16 +99,16 @@ async def tip_user(
         print(f"Attempting to retrieve balance for sender wallet: {user_id}")
         try:
             available_balance = sender_wallet.balance
-            print(f"Retrieved balance object: {balance_obj}")
+            print(f"Retrieved balance object: {balance}")
             # Type-check the balance object
-            if not hasattr(balance_obj, 'available'):
+            if not hasattr(balance, 'available'):
                 raise HTTPException(status_code=500, detail="Balance object does not have an 'available' attribute.")
             
-            if not isinstance(balance_obj.available, (int, float)):
+            if not isinstance(balance.available, (int, float)):
                 raise HTTPException(status_code=500, detail="Balance 'available' is not of type int or float.")
             # Access balance attributes properly (no parentheses)
-            available_balance = balance_obj.available
-            pending_balance = balance_obj.pending  # Just for logging purposes
+            available_balance = balance.available
+            pending_balance = balance.pending  # Just for logging purposes
             print(f"Sender wallet balance: available={available_balance}, pending={pending_balance}")
 
         except AttributeError as attr_error:
