@@ -96,35 +96,56 @@ async def tip_user(
         print(f"Recipient wallet successfully created for user: {recipient_id}")
      
         # Step3: Check if sender wallet has enough balance
-        balance = await sender_wallet.balance()
+        print(f"Attempting to retrieve balance for sender wallet: {user_id}")
+        try:
+            balance_obj = await sender_wallet.balance()
+            print(f"Retrieved balance object: {balance_obj}")
+            # Type-check the balance object
+            if not hasattr(balance_obj, 'available'):
+                raise HTTPException(status_code=500, detail="Balance object does not have an 'available' attribute.")
+            
+            if not isinstance(balance_obj.available, (int, float)):
+                raise HTTPException(status_code=500, detail="Balance 'available' is not of type int or float.")
+            # Access balance attributes properly (no parentheses)
+            available_balance = balance_obj.available
+            pending_balance = balance_obj.pending  # Just for logging purposes
+            print(f"Sender wallet balance: available={available_balance}, pending={pending_balance}")
+
+        except AttributeError as attr_error:
+            print(f"Attribute error while accessing balance: {attr_error}")
+            raise HTTPException(status_code=500, detail=f"Error accessing balance attributes: {attr_error}")
+        except TypeError as type_error:
+            print(f"Type error while accessing balance: {type_error}")
+            raise HTTPException(status_code=500, detail=f"Type error accessing balance: {type_error}")
+        except Exception as balance_error:
+            print(f"General error retrieving balance: {balance_error}")
+            raise HTTPException(status_code=500, detail=f"Failed to retrieve 
         if balance is None:
             raise HTTPException(status_code=400, detail="Failed to retrieve sender wallet balance.")
-        # Ensure balance is a accessed correctly
-        print(f"Sender wallet balance: available={balance.available}, pending={balance.pending}")
 
-        if balance.available == 0:
+        # Step 4: Validate sender's balance is enough for tipping
+        if available_balance == 0:
             # If balance is zero, prompt the gigabrain to add funds
             return JSONResponse(
                 content={"status": "error", "message": "Your wallet balance is zero. Please mint or receive ecash to proceed."}
             )
-        if balance.available < amount:
+        if available_balance < amount:
             # If balance is insufficient, return an error
             return JSONResponse(
                 content={"status": "error", "message": "Insufficient funds. Please mint or receive ecash to proceed."}
             )
-        print(f"Sender wallet balance is sufficient: {balance.available}")
+        print(f"Sender wallet balance is sufficient: {available_balance}")
         
 
-
-        # Step4: Select proofs to send
+        # Step5: Select proofs to send
         proofs_to_send, remainder_proofs = await sender_wallet.select_to_send(amount)
         print(f"Proofs to send: {proofs_to_send}, Remainder proofs: {remainder_proofs}")  # Debugging
 
-        # Step5: Serialize proofs into a token
+        # Step6: Serialize proofs into a token
         token = sender_wallet.proofs_to_token(proofs_to_send)
         print(f"Token serialized successfully")
 
-        # Step6: Recipient receives ecash
+        # Step7: Recipient receives ecash
         await recipient_wallet.receive(token)
         print(f"Token generated: {token}") # This should output the token , not an integer
 
