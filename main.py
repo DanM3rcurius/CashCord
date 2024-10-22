@@ -200,8 +200,18 @@ async def request_invoice(user_id: str, amount: float, api_key: str = Depends(ve
         # Request a minting invoice (this will generate a Lightning invoice)
         invoice = await recipient_wallet.request_mint(amount)
         
+        # Convert the Invoice object into a JSON-compatible dictionary
+        invoice_data = {
+            "amount": invoice.amount,
+            "bolt11": invoice.bolt11,
+            "payment_hash": invoice.payment_hash,
+            "id": invoice.id,
+            "out": invoice.out,
+            "time_created": invoice.time_created
+        }
+
         # Return the invoice to the client (so the sender can pay it)
-        return JSONResponse (content={"status": "invoice_created", "invoice": invoice})
+        return JSONResponse (content={"status": "invoice_created", "invoice": invoice_data})
     
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
