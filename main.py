@@ -73,7 +73,7 @@ async def mint_ecash(user_id: str, amount: int, api_key: str = Depends(verify_ap
 # Endpoint for tipping within the Discord server
 @app.post("/tip")
 async def tip_user(
-    tip_request: Any,
+    tip_request:  dict = Body(...),
     api_key: str = Depends(verify_api_key)
 ):
     # Extract required data from the incoming object
@@ -153,8 +153,11 @@ async def tip_user(
         # Example: send_discord_private_message(recipient_id, f"You have received a tip of {amount} units!")
 
         return {"status": "success"}
+    except KeyError as e:
+        raise HTTPException(status_code=400, detail=f"Missing key: {e}")
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
+        
 
 # Endpoint for sending ecash to an external/persisten wallet 
 @app.post("/send")
