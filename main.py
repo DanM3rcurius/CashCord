@@ -98,7 +98,7 @@ async def tip_user(
         # Step3: Check if sender wallet has enough balance
         print(f"Attempting to retrieve balance for sender wallet: {user_id}")
         try:
-            balance_obj = await sender_wallet.balance()
+            available_balance = await sender_wallet.balance
             print(f"Retrieved balance object: {balance_obj}")
             # Type-check the balance object
             if not hasattr(balance_obj, 'available'):
@@ -171,7 +171,7 @@ async def send_ecash(
         sender_wallet = await get_user_wallet(user_id)
 
         # Check if sender has enough balance
-        balance = await sender_wallet.balance()
+        balance = await sender_wallet.balance
         print(f"Balance: {balance}")
 
         if balance.available < amount:
@@ -233,7 +233,7 @@ async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_
 async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
     try:
         wallet = await get_user_wallet(user_id, persistent=False)
-        balance = await wallet.balance()
+        balance = await wallet.balance
         return JSONResponse (content={"available": balance.available, "pending": balance.pending})
 
     except Exception as e:
