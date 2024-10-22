@@ -119,7 +119,7 @@ async def tip_user(
             raise HTTPException(status_code=500, detail=f"Type error accessing balance: {type_error}")
         except Exception as balance_error:
             print(f"General error retrieving balance: {balance_error}")
-            raise HTTPException(status_code=500, detail=f"Failed to retrieve 
+            raise HTTPException(status_code=500, detail=f"Failed to retrieve sender wallet balance: {balance_error}")
         if balance is None:
             raise HTTPException(status_code=400, detail="Failed to retrieve sender wallet balance.")
 
