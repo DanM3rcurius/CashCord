@@ -12,7 +12,7 @@ async def verify_api_key(x_api_key: str = Header(...)):
     if x_api_key not in API_KEYS:
         raise HTTPException(status_code=401, detail="Invalid API Key")
 
-# Dictionary to store user wallets
+# Dictionary to store gigabrain wallets
 user_wallets = {}
 
 # define get_user_wallet function
@@ -20,7 +20,7 @@ async def get_user_wallet(user_id, persistent: bool = False):
     if user_id not in user_wallets:
         try:
             # Use an in-memory or persistent database based on the context
-            db_path = f"user_wallets/{user_id}.db" if persistent else ":memory:"  # Persistent wallets have user-specific paths (DANGERZONE)
+            db_path = f"user_wallets/{user_id}.db" if persistent else ":memory:"  # Persistent wallets have gigabrain-specific paths (DANGERZONE)
             
             # Use Wallet.with_db to initialize the wallet with the mint URL and database
             user_wallet = await Wallet.with_db(url="https://stablenut.umint.cash", db=db_path)
@@ -80,25 +80,38 @@ async def tip_user(
     recipient_id = tip_request.recipient_id
     try:
         # Get sender wallet (temporary in-memory)
+        print(f"Attempting to get or create sender wallet for gigabrain: {user_id}")
         sender_wallet = await get_user_wallet(user_id)
 
         # Check if the sender wallet is initialized
         if sender_wallet is None:
             raise HTTPException(status_code=400, detail="Sender wallet not found. Please create a wallet first.")
+        print(f"Sender wallet successfully created for gigabrain: {user_id}")
 
         # Check if sender wallet has enough balance
         balance = await sender_wallet.balance()
-        if balance is None or balance.available < amount:
-            # If balance is insufficient, return error
-            return JSONResponse(content={"status": "error", "message": "Insufficient funds. Please mint or receive ecash to proceed."})
-        print(f"Balance: {balance}")
+        if balance is None:
+            raise HTTPException(status_code=400, detail="Failed to retrieve sender wallet balance.")
+        if balance.available == 0:
+            # If balance is zero, prompt the gigabrain to add funds
+            return JSONResponse(
+                content={"status": "error", "message": "Your wallet balance is zero. Please mint or receive ecash to proceed."}
+            )
+        if balance.available < amount:
+            # If balance is insufficient, return an error
+            return JSONResponse(
+                content={"status": "error", "message": "Insufficient funds. Please mint or receive ecash to proceed."}
+            )
+        print(f"Sender wallet balance is sufficient: {balance.available}")
         
-        # Get recipient wallet
+        # Get or create recipient wallet
+        print(f"Attempting to get or create recipient wallet for user: {recipient_id}")
         recipient_wallet = await get_user_wallet(recipient_id)
 
-                # Check if the recipient wallet is initialized
+        # Check if the recipient wallet is initialized
         if recipient_wallet is None:
             raise HTTPException(status_code=400, detail="Recipient wallet not found. Please create a wallet first.")
+        print(f"Recipient wallet successfully created for user: {recipient_id}")
 
         # Select proofs to send
         proofs_to_send, remainder_proofs = await sender_wallet.select_to_send(amount)
@@ -106,13 +119,14 @@ async def tip_user(
 
         # Serialize proofs into a token
         token = sender_wallet.proofs_to_token(proofs_to_send)
+        print(f"Token serialized successfully")
 
         # Recipient receives ecash
         await recipient_wallet.receive(token)
-        print(f"Token generated: {token}") # This should output the token, not an integer
+        print(f"Token generated: {token}") # This should output the token , not an integer
 
         # Notify the recipient (this could be a call to your Discord agent)
-        # Example: send_discord_message(recipient_id, f"You have received a tip of {amount} units!")
+        # Example: send_discord_private_message(recipient_id, f"You have received a tip of {amount} units!")
 
         return {"status": "success"}
     except Exception as e:
@@ -190,7 +204,7 @@ async def check_receive(user_id: str, token: str, api_key: str = Depends(verify_
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# Endpoint to Check user wallet balance 
+# Endpoint to Check gigabrain wallet balance 
 @app.post("/balance")
 async def get_balance(user_id: str, api_key: str = Depends(verify_api_key)):
     try:
