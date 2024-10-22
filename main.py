@@ -192,7 +192,7 @@ async def send_ecash(
 
 # Define the request invoice endpoint
 @app.post("/request_invoice")
-async def request_invoice(user_id: str, amount: int, api_key: str = Depends(verify_api_key)):
+async def request_invoice(user_id: str, amount: float, api_key: str = Depends(verify_api_key)):
     try:
         # Get the recipient wallet (the test wallet on this device)
         recipient_wallet = await get_user_wallet(user_id)
