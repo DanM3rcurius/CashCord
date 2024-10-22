@@ -98,7 +98,7 @@ async def tip_user(
         # Step3: Check if sender wallet has enough balance
         print(f"Attempting to retrieve balance for sender wallet: {user_id}")
         try:
-            available_balance = await sender_wallet.balance
+            available_balance = sender_wallet.balance
             print(f"Retrieved balance object: {balance_obj}")
             # Type-check the balance object
             if not hasattr(balance_obj, 'available'):
