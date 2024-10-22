@@ -43,10 +43,10 @@ async def get_user_wallet(user_id, persistent: bool = False):
     return user_wallets.get(user_id)  # Ensure that the wallet object is always returned, either created or existing
 
 # Defining JSON body for tip and send requests
-class TipRequest(BaseModel):
-    user_id: str
-    amount: float
-    recipient_id: str
+# class TipRequest(BaseModel):
+#    user_id: str
+#    amount: float
+#    recipient_id: str
 
 ## Defining JSON body for send request
 class SendRequest(BaseModel):
