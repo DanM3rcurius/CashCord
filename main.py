@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException, Depends, Header, Body, Request
 from fastapi.responses import JSONResponse
 from cashu.wallet.wallet import Wallet, Database
 from pydantic import BaseModel
+import logging
+import os
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -176,7 +178,7 @@ async def tip_user(
         # Example: send_discord_private_message(recipient_id, f"You have received a tip of {amount} units!")
 
         return {"status": "success"}
-        
+
     except ValueError as value_error:
         logging.error(f"ValueError occurred while parsing JSON: {str(value_error)}")
         raise HTTPException(status_code=400, detail="Invalid JSON provided in request body.")
