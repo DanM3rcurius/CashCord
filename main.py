@@ -83,12 +83,9 @@ async def tip_user(
     # Extract required data from the incoming object
     try:
         # Parse the request body as JSON
-        incoming_data = await request.json()
-        logging.debug(f"Parsed incoming data: {incoming_data}")
-        # Extract the actual body content from the incoming data
-        tip_request = incoming_data.get("body")
-        if tip_request is None:
-            raise HTTPException(status_code=400, detail="Missing 'body' key in request")
+        tip_request = await request.json()
+        logging.debug(f"Parsed incoming data: {tip_request}")
+
         # Extract required fields from the tip request
         user_id = tip_request.get("user_id")
         amount = tip_request.get("amount")
