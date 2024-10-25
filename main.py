@@ -1,8 +1,10 @@
-from fastapi import FastAPI, HTTPException, Depends, Header
+from fastapi import FastAPI, HTTPException, Depends, Header, Body, Request
 from fastapi.responses import JSONResponse
 from cashu.wallet.wallet import Wallet, Database
 from pydantic import BaseModel
-from fastapi import Body, HTTPException, Depends
+
+logging.basicConfig(level=logging.DEBUG)
+
 
 app = FastAPI()
 
@@ -73,14 +75,35 @@ async def mint_ecash(user_id: str, amount: int, api_key: str = Depends(verify_ap
 # Endpoint for tipping within the Discord server
 @app.post("/tip")
 async def tip_user(
-    tip_request:  dict = Body(...),
+    request: Request, # Accept raw Request
     api_key: str = Depends(verify_api_key)
 ):
     # Extract required data from the incoming object
     try:
+        # Parse the request body as JSON
+        incoming_data = await request.json()
+        logging.debug(f"Parsed incoming data: {incoming_data}")
+        # Extract the actual body content from the incoming data
+        tip_request = incoming_data.get("body")
+        if tip_request is None:
+            raise HTTPException(status_code=400, detail="Missing 'body' key in request")
+        # Extract required fields from the tip request
         user_id = tip_request.get("user_id")
         amount = tip_request.get("amount")
         recipient_id = tip_request.get("recipient_id")
+
+        # Log the values extracted from the request
+        logging.debug(f"Extracted fields - user_id: {user_id}, amount: {amount}, recipient_id: {recipient_id}")
+        
+        # Verify that all fields are present
+        if user_id is None or amount is None or recipient_id is None:
+            raise HTTPException(status_code=400, detail="Missing one or more required fields: user_id, amount, recipient_id")
+
+        # Convert amount to float if it's passed as a string
+        try:
+            amount = float(amount)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Amount must be a valid number")
     except KeyError as e:
         raise HTTPException(status_code=400, detail=f"Missing key: {e}")
     try:
@@ -153,9 +176,12 @@ async def tip_user(
         # Example: send_discord_private_message(recipient_id, f"You have received a tip of {amount} units!")
 
         return {"status": "success"}
-    except KeyError as e:
-        raise HTTPException(status_code=400, detail=f"Missing key: {e}")
+        
+    except ValueError as value_error:
+        logging.error(f"ValueError occurred while parsing JSON: {str(value_error)}")
+        raise HTTPException(status_code=400, detail="Invalid JSON provided in request body.")
     except Exception as e:
+        logging.error(f"Exception occurred: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
         
 
