@@ -1,0 +1,1980 @@
+{
+    "id": "1e6ee165-746b-4c5d-b46f-9bce7c4e8c13",
+    "name": "first-spell",
+    "projectId": "cm28t71zg0000te49d1p5im95",
+    "createdAt": "2024-10-14T09:25:43.855Z",
+    "updatedAt": "1729852776552",
+    "type": "behave",
+    "spellReleaseId": null,
+    "worldId": null,
+    "graph": {
+        "data": {
+            "comments": [
+                {
+                    "id": "b70bf227-bd8a-497e-bda7-c3eeb8d331bc",
+                    "text": "Should be object variable?!",
+                    "fontSize": "xxx-large",
+                    "metadata": {
+                        "positionX": "1254.9895492120274",
+                        "positionY": "1499.3694793384614"
+                    }
+                },
+                {
+                    "id": "aa850dfa-486a-4bcb-a38f-254488930702",
+                    "text": "4. How Does the User “Connect” Their Wallet to the Agent the First Time?\nTo connect their wallet to the agent:\n\nStep 1: User Sets Up a Cashu Wallet\nDownload Wallet App: Users install a Cashu-compatible wallet on their device.\nObtain Wallet Token: The wallet generates a token or public key for receiving funds.\nStep 2: User Connects Wallet via Agent Command\nSend Connect Command: Users send a command in Discord to the agent.\nExample: !connectwallet <wallet_token>\nAgent Verification: The agent verifies and stores the wallet information securely.\nStep 3: Confirm Connection\nAgent Confirmation: The agent sends a message confirming successful connection.\nTest Transaction: Optionally, users can perform a small test tip to ensure everything works.",
+                    "width": 2048,
+                    "height": 1020,
+                    "fontSize": "xxx-large",
+                    "metadata": {
+                        "positionX": "-2234.72034889432",
+                        "positionY": "1147.7455644756828"
+                    }
+                }
+            ]
+        },
+        "nodes": [
+            {
+                "id": "06b66438-b3ab-4d9a-ad8a-6bd0814098e2",
+                "type": "math/toObject/string",
+                "metadata": {
+                    "positionX": "1365.060946693911",
+                    "positionY": "539.5195826893099"
+                },
+                "parameters": {
+                    "a": {
+                        "link": {
+                            "nodeId": "73e20cf1-fa26-404a-94ce-d73091921c36",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "4fe0e021-c1d7-4886-816b-a71dfc318220",
+                "type": "action/json/stringify",
+                "flows": {
+                    "flow": {
+                        "nodeId": "ea7d451e-899f-4a1c-b728-1a3a82c1b088",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "1090.44099264323",
+                    "positionY": "743.6566252419078"
+                },
+                "configuration": {
+                    "valueType": "string",
+                    "socketInputs": [
+                        {
+                            "key": "Item",
+                            "name": "Item",
+                            "valueType": "string"
+                        }
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "valueTypes",
+                        "socketInputs",
+                        "valueTypeOptions"
+                    ],
+                    "valueTypeOptions": {
+                        "values": [
+                            "string",
+                            "integer",
+                            "float",
+                            "boolean",
+                            "object",
+                            "array"
+                        ],
+                        "socketName": "Item"
+                    }
+                }
+            },
+            {
+                "id": "73e20cf1-fa26-404a-94ce-d73091921c36",
+                "type": "logic/string/template",
+                "metadata": {
+                    "positionX": "952.7982037258342",
+                    "positionY": "512.7404463227906"
+                },
+                "parameters": {
+                    "amount": {
+                        "link": {
+                            "nodeId": "c2247baf-ef23-41ef-96b1-29e2dc9906e6",
+                            "socket": "result"
+                        }
+                    },
+                    "user_id": {
+                        "link": {
+                            "nodeId": "95b69194-6f1b-4376-839e-3a84ef0b8f68",
+                            "socket": "user_ID"
+                        }
+                    },
+                    "recipient_id": {
+                        "link": {
+                            "nodeId": "72f6d32e-cdab-4558-82b0-fcf5fe1d0387",
+                            "socket": "Item"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "user_id",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "recipient_id",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "amount",
+                            "valueType": "float"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer",
+                        "float"
+                    ],
+                    "textEditorData": "{\"user_id\":\"{{user_id}}\", \"wallet_token\":\"{{wallet_token}}\", \"amount\":\"{{amount}}\", \"recipient_id\":\"{{recipient_id}}\"}",
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ],
+                    "textEditorOptions": {
+                        "options": {
+                            "name": "Text template",
+                            "language": "handlebars"
+                        }
+                    }
+                }
+            },
+            {
+                "id": "c2247baf-ef23-41ef-96b1-29e2dc9906e6",
+                "type": "math/toFloat/string",
+                "metadata": {
+                    "positionX": "555",
+                    "positionY": "615"
+                },
+                "parameters": {
+                    "a": {
+                        "link": {
+                            "nodeId": "5a2aa57e-2a26-47f6-9a11-0593b55f4fc4",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "f8ad78db-b9e9-4ed8-9a82-dd94444d37a1",
+                "type": "action/json/stringify",
+                "flows": {
+                    "flow": {
+                        "nodeId": "d0702a34-74c6-403e-9d7b-65514075a294",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "1266.6629899096233",
+                    "positionY": "1200.7510307734283"
+                },
+                "parameters": {
+                    "Item": {
+                        "link": {
+                            "nodeId": "b460ebb4-7852-40e5-9698-aeb12dc6f098",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {
+                    "valueType": "string",
+                    "socketInputs": [
+                        {
+                            "key": "Item",
+                            "name": "Item",
+                            "valueType": "string"
+                        }
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "valueTypes",
+                        "socketInputs",
+                        "valueTypeOptions"
+                    ],
+                    "valueTypeOptions": {
+                        "values": [
+                            "string",
+                            "integer",
+                            "float",
+                            "boolean",
+                            "object",
+                            "array"
+                        ],
+                        "socketName": "Item"
+                    }
+                }
+            },
+            {
+                "id": "93c87373-f5a6-4c9b-8c8e-0af2d28ad969",
+                "type": "action/object/create",
+                "metadata": {
+                    "positionX": "944.0639906903011",
+                    "positionY": "1115.1106633688978"
+                },
+                "parameters": {
+                    "token": {
+                        "link": {
+                            "nodeId": "7110ba84-ccdf-42d9-b8e8-ad7f4e21416a",
+                            "socket": "result"
+                        }
+                    },
+                    "user_id": {
+                        "link": {
+                            "nodeId": "9b5b35ad-902c-423e-8ca0-5d9dbc94bc15",
+                            "socket": "user_ID"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "user_id",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "token",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer"
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "valueTypes",
+                        "valueTypeOptions"
+                    ]
+                }
+            },
+            {
+                "id": "c88a30fe-39a4-48b6-a40b-12ceac79d759",
+                "type": "debug/log/object",
+                "flows": {
+                    "flow": {
+                        "nodeId": "94bf62e1-8ef2-4bac-8b54-d2ddb4dd6232",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "1711.2482574273372",
+                    "positionY": "723.4798681560221"
+                },
+                "parameters": {
+                    "text": {
+                        "value": "payload object"
+                    },
+                    "payload": {
+                        "link": {
+                            "nodeId": "06b66438-b3ab-4d9a-ad8a-6bd0814098e2",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "1fea0633-1759-4876-bbd8-66c9060ad6c6",
+                "type": "variables/get",
+                "metadata": {
+                    "positionX": "2062.5377085360697",
+                    "positionY": "1145.7400419361798"
+                },
+                "configuration": {
+                    "variableId": "8a132c30-238a-4f02-9364-c03cd7760104",
+                    "socketOutputs": [
+                        {
+                            "name": "discordChannel",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "7530d252-28cc-42ff-a891-ba92f2965dc9",
+                "type": "math/toString/object",
+                "metadata": {
+                    "positionX": "2043.1672096702505",
+                    "positionY": "1241.72292107448"
+                },
+                "parameters": {
+                    "a": {
+                        "link": {
+                            "nodeId": "d0702a34-74c6-403e-9d7b-65514075a294",
+                            "socket": "response"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "6968dace-521d-4a8e-9e3c-b2c9264737c1",
+                "type": "discord/sendMessage",
+                "metadata": {
+                    "positionX": "2421.226578232907",
+                    "positionY": "917.64053060256"
+                },
+                "parameters": {
+                    "channel": {
+                        "link": {
+                            "nodeId": "1fea0633-1759-4876-bbd8-66c9060ad6c6",
+                            "socket": "discordChannel"
+                        }
+                    },
+                    "content": {
+                        "link": {
+                            "nodeId": "7530d252-28cc-42ff-a891-ba92f2965dc9",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "01a3b91c-0237-4b2d-8077-4c17c8c409d2",
+                "type": "debug/log/object",
+                "flows": {
+                    "flow": {
+                        "nodeId": "6968dace-521d-4a8e-9e3c-b2c9264737c1",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "2016.9625251726507",
+                    "positionY": "901.9045836628159"
+                },
+                "parameters": {
+                    "text": {
+                        "value": "/receive response ="
+                    },
+                    "payload": {
+                        "link": {
+                            "nodeId": "d0702a34-74c6-403e-9d7b-65514075a294",
+                            "socket": "response"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "d0702a34-74c6-403e-9d7b-65514075a294",
+                "type": "actions/http/fetch",
+                "flows": {
+                    "flow": {
+                        "nodeId": "01a3b91c-0237-4b2d-8077-4c17c8c409d2",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "1593.0722023955338",
+                    "positionY": "1143.2897079764366"
+                },
+                "parameters": {
+                    "url": {
+                        "link": {
+                            "nodeId": "b460ebb4-7852-40e5-9698-aeb12dc6f098",
+                            "socket": "result"
+                        }
+                    },
+                    "method": {
+                        "value": "POST"
+                    },
+                    "headers": {
+                        "link": {
+                            "nodeId": "a6590f1c-fbc9-4a11-861f-a187eaa4ba44",
+                            "socket": "object"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "9b5b35ad-902c-423e-8ca0-5d9dbc94bc15",
+                "type": "variables/get",
+                "metadata": {
+                    "positionX": "529.2748554672039",
+                    "positionY": "776.0794528501425"
+                },
+                "configuration": {
+                    "variableId": "85f81dbf-c18c-4fdb-a33b-5a1203e6bf7e",
+                    "socketOutputs": [
+                        {
+                            "name": "user_ID",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "b460ebb4-7852-40e5-9698-aeb12dc6f098",
+                "type": "logic/string/template",
+                "metadata": {
+                    "positionX": "894.9616886977719",
+                    "positionY": "939.0861856751932"
+                },
+                "parameters": {
+                    "token": {
+                        "link": {
+                            "nodeId": "7110ba84-ccdf-42d9-b8e8-ad7f4e21416a",
+                            "socket": "result"
+                        }
+                    },
+                    "user_id": {
+                        "link": {
+                            "nodeId": "9b5b35ad-902c-423e-8ca0-5d9dbc94bc15",
+                            "socket": "user_ID"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "user_id",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "token",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer",
+                        "float"
+                    ],
+                    "textEditorData": "https://alert-wren-proven.ngrok-free.app/send/receive?user_id={{user_id}}&token={{token}}",
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ],
+                    "textEditorOptions": {
+                        "options": {
+                            "name": "Text template",
+                            "language": "handlebars"
+                        }
+                    }
+                }
+            },
+            {
+                "id": "7110ba84-ccdf-42d9-b8e8-ad7f4e21416a",
+                "type": "logic/array/access",
+                "metadata": {
+                    "positionX": "506.02736321382713",
+                    "positionY": "1149.830269656132"
+                },
+                "parameters": {
+                    "a": {
+                        "link": {
+                            "nodeId": "0084f44f-edd3-4b5f-9ef7-75d5fff11ce6",
+                            "socket": "result"
+                        }
+                    },
+                    "b": {
+                        "value": 1
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "0084f44f-edd3-4b5f-9ef7-75d5fff11ce6",
+                "type": "logic/split/string",
+                "metadata": {
+                    "positionX": "183.83362154480187",
+                    "positionY": "877.3327569103963"
+                },
+                "parameters": {
+                    "string": {
+                        "link": {
+                            "nodeId": "1148ec70-b578-4fb2-abee-927dff1f997a",
+                            "socket": "operatorMessage"
+                        }
+                    },
+                    "seperator": {
+                        "value": " "
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "e6a12c9e-e54a-4f66-9d70-b33363135ebb",
+                "type": "variables/get",
+                "metadata": {
+                    "positionX": "2093.182226675314",
+                    "positionY": "634.9995784606883"
+                },
+                "configuration": {
+                    "variableId": "8a132c30-238a-4f02-9364-c03cd7760104",
+                    "socketOutputs": [
+                        {
+                            "name": "discordChannel",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "c44950f9-ba03-4075-b085-91abfde63b18",
+                "type": "math/toString/object",
+                "metadata": {
+                    "positionX": "2073.8117278094946",
+                    "positionY": "730.9824575989886"
+                },
+                "parameters": {
+                    "a": {
+                        "link": {
+                            "nodeId": "94bf62e1-8ef2-4bac-8b54-d2ddb4dd6232",
+                            "socket": "response"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "c19098c3-0362-4fe7-a76a-054e3255a5ab",
+                "type": "discord/sendMessage",
+                "metadata": {
+                    "positionX": "2440.4906312931626",
+                    "positionY": "471.9312961498596"
+                },
+                "parameters": {
+                    "channel": {
+                        "link": {
+                            "nodeId": "e6a12c9e-e54a-4f66-9d70-b33363135ebb",
+                            "socket": "discordChannel"
+                        }
+                    },
+                    "content": {
+                        "link": {
+                            "nodeId": "c44950f9-ba03-4075-b085-91abfde63b18",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "73d40e41-208b-4aba-bbd3-3f4e861cf225",
+                "type": "debug/log/object",
+                "flows": {
+                    "flow": {
+                        "nodeId": "c19098c3-0362-4fe7-a76a-054e3255a5ab",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "2111.947262186606",
+                    "positionY": "406.83064838256576"
+                },
+                "parameters": {
+                    "text": {
+                        "value": "/tip response ="
+                    },
+                    "payload": {
+                        "link": {
+                            "nodeId": "94bf62e1-8ef2-4bac-8b54-d2ddb4dd6232",
+                            "socket": "response"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "a6590f1c-fbc9-4a11-861f-a187eaa4ba44",
+                "type": "action/object/create",
+                "metadata": {
+                    "positionX": "1308.676203151991",
+                    "positionY": "916.8791637115658"
+                },
+                "parameters": {
+                    "accept": {
+                        "value": "application/json"
+                    },
+                    "x-api-key": {
+                        "value": "CC-test"
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "accept",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "x-api-key",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer"
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "valueTypes",
+                        "valueTypeOptions"
+                    ]
+                }
+            },
+            {
+                "id": "ea7d451e-899f-4a1c-b728-1a3a82c1b088",
+                "type": "variables/set",
+                "flows": {
+                    "flow": {
+                        "nodeId": "c88a30fe-39a4-48b6-a40b-12ceac79d759",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "1344.5525605531052",
+                    "positionY": "348.73561769739774"
+                },
+                "parameters": {
+                    "tipPayload": {
+                        "link": {
+                            "nodeId": "b0e3f662-d8b8-4b0a-8d01-1aff6df52dca",
+                            "socket": "object"
+                        }
+                    }
+                },
+                "configuration": {
+                    "emitEvent": true,
+                    "variableId": "b82454fa-6307-431d-a68b-e6158a51144d",
+                    "socketInputs": [
+                        {
+                            "name": "tipPayload",
+                            "valueType": "object"
+                        }
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "tipPayload",
+                            "valueType": "object"
+                        }
+                    ],
+                    "valueTypeName": "object",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "socketInputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "94bf62e1-8ef2-4bac-8b54-d2ddb4dd6232",
+                "type": "actions/http/fetch",
+                "flows": {
+                    "flow": {
+                        "nodeId": "73d40e41-208b-4aba-bbd3-3f4e861cf225",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "1746.7975489422074",
+                    "positionY": "382.63367799257867"
+                },
+                "parameters": {
+                    "url": {
+                        "value": "https://alert-wren-proven.ngrok-free.app/tip"
+                    },
+                    "body": {
+                        "link": {
+                            "nodeId": "06b66438-b3ab-4d9a-ad8a-6bd0814098e2",
+                            "socket": "result"
+                        }
+                    },
+                    "method": {
+                        "value": "POST"
+                    },
+                    "headers": {
+                        "link": {
+                            "nodeId": "a6590f1c-fbc9-4a11-861f-a187eaa4ba44",
+                            "socket": "object"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "5a2aa57e-2a26-47f6-9a11-0593b55f4fc4",
+                "type": "logic/array/access",
+                "metadata": {
+                    "positionX": "513.7835870798115",
+                    "positionY": "265.92820050270893"
+                },
+                "parameters": {
+                    "a": {
+                        "link": {
+                            "nodeId": "21d749e8-70da-4b70-b407-b19c00eec256",
+                            "socket": "result"
+                        }
+                    },
+                    "b": {
+                        "value": 1
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "148f8009-0a59-4322-bedc-30adeaf27569",
+                "type": "debug/log",
+                "flows": {
+                    "flow": {
+                        "nodeId": "4fe0e021-c1d7-4886-816b-a71dfc318220",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "842.5468560131987",
+                    "positionY": "750.9934009507898"
+                },
+                "parameters": {
+                    "text": {
+                        "link": {
+                            "nodeId": "39974f56-afd9-410d-b73a-3a0e60d56257",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "e7884b68-f31a-4647-9c85-3c77a2947dad",
+                "type": "discord/sendMessage",
+                "metadata": {
+                    "positionX": "1777.4888346785442",
+                    "positionY": "218.51597453877378"
+                },
+                "parameters": {
+                    "channel": {
+                        "link": {
+                            "nodeId": "ac7bfb85-e185-4d72-b37a-e81d6628c2ce",
+                            "socket": "discordChannel"
+                        }
+                    },
+                    "content": {
+                        "value": "sending tip (FE-test)."
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "39974f56-afd9-410d-b73a-3a0e60d56257",
+                "type": "logic/string/template",
+                "metadata": {
+                    "positionX": "906.2146233661863",
+                    "positionY": "130.44215512620906"
+                },
+                "parameters": {
+                    "user_id": {
+                        "link": {
+                            "nodeId": "95b69194-6f1b-4376-839e-3a84ef0b8f68",
+                            "socket": "user_ID"
+                        }
+                    },
+                    "recipient_id": {
+                        "link": {
+                            "nodeId": "72f6d32e-cdab-4558-82b0-fcf5fe1d0387",
+                            "socket": "Item"
+                        }
+                    },
+                    "wallet_token": {
+                        "link": {
+                            "nodeId": "b9c63738-5ad6-418b-ac53-075d32a127ab",
+                            "socket": "Item"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "user_id",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "wallet_token",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "recipient_id",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "amount",
+                            "valueType": "float"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer",
+                        "float"
+                    ],
+                    "textEditorData": "{\"user_id\":\"{{user_id}}\", \"wallet_token\":\"{{wallet_token}}\", \"amount\":\"{{amount}}\", \"recipient_id\":\"{{recipient_id}}\"}",
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ],
+                    "textEditorOptions": {
+                        "options": {
+                            "name": "Text template",
+                            "language": "handlebars"
+                        }
+                    }
+                }
+            },
+            {
+                "id": "95b69194-6f1b-4376-839e-3a84ef0b8f68",
+                "type": "variables/get",
+                "metadata": {
+                    "positionX": "499.1265100242599",
+                    "positionY": "28.457645466668623"
+                },
+                "configuration": {
+                    "variableId": "85f81dbf-c18c-4fdb-a33b-5a1203e6bf7e",
+                    "socketOutputs": [
+                        {
+                            "name": "user_ID",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "9bdb6382-0bd5-44c2-a665-8c4fd08e3705",
+                "type": "variables/set",
+                "flows": {
+                    "flow": {
+                        "nodeId": "48cb6062-d9c8-4179-9b7a-97b24865b96e",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "-345.7009911776291",
+                    "positionY": "310.1490487076534"
+                },
+                "parameters": {
+                    "user_ID": {
+                        "link": {
+                            "nodeId": "89e907b0-531b-416c-8733-a4e261a1f0ea",
+                            "socket": "authorId"
+                        }
+                    }
+                },
+                "configuration": {
+                    "emitEvent": true,
+                    "variableId": "85f81dbf-c18c-4fdb-a33b-5a1203e6bf7e",
+                    "socketInputs": [
+                        {
+                            "name": "user_ID",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "user_ID",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "socketInputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "995f2400-7a50-45a3-aded-0c2bb8162f44",
+                "type": "logic/string/template",
+                "metadata": {
+                    "positionX": "-347.41799669049306",
+                    "positionY": "-340.04041701658207"
+                },
+                "parameters": {
+                    "content": {
+                        "link": {
+                            "nodeId": "5b434c4f-4cd4-4e1d-85e0-3ea5fd2a9dee",
+                            "socket": "content"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "content",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer",
+                        "float"
+                    ],
+                    "textEditorData": "PARSE COMMAN \"content\" result = {{content}} ",
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ],
+                    "textEditorOptions": {
+                        "options": {
+                            "name": "Text template",
+                            "language": "handlebars"
+                        }
+                    }
+                }
+            },
+            {
+                "id": "ff1ce811-d0c3-40d7-bc26-ad59c64e2524",
+                "type": "debug/log",
+                "flows": {
+                    "flow": {
+                        "nodeId": "109a1476-8343-4f52-9814-be2a61e73201",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "-337.2553263845282",
+                    "positionY": "-429.8040782093012"
+                },
+                "parameters": {
+                    "text": {
+                        "link": {
+                            "nodeId": "995f2400-7a50-45a3-aded-0c2bb8162f44",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "88d65f23-97bb-4b9e-8adf-c2b723b8517d",
+                "type": "variables/get",
+                "metadata": {
+                    "positionX": "-926.09923945231",
+                    "positionY": "-122.03433718686397"
+                },
+                "configuration": {
+                    "variableId": "8a132c30-238a-4f02-9364-c03cd7760104",
+                    "socketOutputs": [
+                        {
+                            "name": "discordChannel",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "ac7bfb85-e185-4d72-b37a-e81d6628c2ce",
+                "type": "variables/get",
+                "metadata": {
+                    "positionX": "1467.4126289151832",
+                    "positionY": "148.07126362189376"
+                },
+                "configuration": {
+                    "variableId": "8a132c30-238a-4f02-9364-c03cd7760104",
+                    "socketOutputs": [
+                        {
+                            "name": "discordChannel",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "99c91054-457a-4b6c-98c3-5d08c511d370",
+                "type": "discord/sendMessage",
+                "metadata": {
+                    "positionX": "1723.5618196768432",
+                    "positionY": "-24.966368868950326"
+                },
+                "parameters": {
+                    "channel": {
+                        "link": {
+                            "nodeId": "ac7bfb85-e185-4d72-b37a-e81d6628c2ce",
+                            "socket": "discordChannel"
+                        }
+                    },
+                    "content": {
+                        "value": "Wallet connected."
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "72f6d32e-cdab-4558-82b0-fcf5fe1d0387",
+                "type": "logic/array/removeLast",
+                "flows": {
+                    "flow": {
+                        "nodeId": "148f8009-0a59-4322-bedc-30adeaf27569",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "515.4489469395726",
+                    "positionY": "429.65129825937277"
+                },
+                "parameters": {
+                    "array": {
+                        "link": {
+                            "nodeId": "21d749e8-70da-4b70-b407-b19c00eec256",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {
+                    "valueType": "string",
+                    "socketOutputs": [
+                        {
+                            "key": "Item",
+                            "name": "Item",
+                            "valueType": "string"
+                        }
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "valueTypes",
+                        "socketOutputs",
+                        "valueTypeOptions"
+                    ],
+                    "valueTypeOptions": {
+                        "values": [
+                            "string",
+                            "number",
+                            "float",
+                            "boolean",
+                            "object",
+                            "array"
+                        ],
+                        "socketName": "Item"
+                    }
+                }
+            },
+            {
+                "id": "b0e3f662-d8b8-4b0a-8d01-1aff6df52dca",
+                "type": "action/object/create",
+                "metadata": {
+                    "positionX": "935.7055557110414",
+                    "positionY": "342.8269612578514"
+                },
+                "parameters": {
+                    "user_id": {
+                        "link": {
+                            "nodeId": "95b69194-6f1b-4376-839e-3a84ef0b8f68",
+                            "socket": "user_ID"
+                        }
+                    },
+                    "recipient_id": {
+                        "link": {
+                            "nodeId": "72f6d32e-cdab-4558-82b0-fcf5fe1d0387",
+                            "socket": "Item"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "user_id",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "recipient_id",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer"
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "valueTypes",
+                        "valueTypeOptions"
+                    ]
+                }
+            },
+            {
+                "id": "21d749e8-70da-4b70-b407-b19c00eec256",
+                "type": "logic/split/string",
+                "metadata": {
+                    "positionX": "140.1490149286958",
+                    "positionY": "396.76628097077923"
+                },
+                "parameters": {
+                    "string": {
+                        "link": {
+                            "nodeId": "1148ec70-b578-4fb2-abee-927dff1f997a",
+                            "socket": "operatorMessage"
+                        }
+                    },
+                    "seperator": {
+                        "value": " "
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "d07404e3-3bb1-41d6-a519-12d188f06aed",
+                "type": "variables/set",
+                "metadata": {
+                    "positionX": "1256.116315393363",
+                    "positionY": "1388.2050858670973"
+                },
+                "configuration": {
+                    "emitEvent": true,
+                    "variableId": "53b61585-c8e2-456d-b35b-abf67902b852",
+                    "socketInputs": [
+                        {
+                            "name": "operatorWallet",
+                            "valueType": "object"
+                        }
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "operatorWallet",
+                            "valueType": "object"
+                        }
+                    ],
+                    "valueTypeName": "object",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "socketInputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "4fc9d4b4-123c-4ecf-9371-d43f124e8562",
+                "type": "logic/string/template",
+                "metadata": {
+                    "positionX": "551.5354995712562",
+                    "positionY": "-218.4473512575055"
+                },
+                "parameters": {
+                    "item": {
+                        "link": {
+                            "nodeId": "b9c63738-5ad6-418b-ac53-075d32a127ab",
+                            "socket": "Item"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "item",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer",
+                        "float"
+                    ],
+                    "textEditorData": "/connect ",
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ],
+                    "textEditorOptions": {
+                        "options": {
+                            "name": "Text template",
+                            "language": "handlebars"
+                        }
+                    }
+                }
+            },
+            {
+                "id": "b0a636cb-0c67-4234-808d-b61f27ffdd76",
+                "type": "debug/log/array",
+                "flows": {
+                    "flow": {
+                        "nodeId": "72f6d32e-cdab-4558-82b0-fcf5fe1d0387",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "176.11060940147559",
+                    "positionY": "153.61739604448064"
+                },
+                "parameters": {
+                    "text": {
+                        "value": "string split result = "
+                    },
+                    "payload": {
+                        "link": {
+                            "nodeId": "21d749e8-70da-4b70-b407-b19c00eec256",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "880039b8-48a0-4860-aae3-7ba093c8464b",
+                "type": "debug/log",
+                "flows": {
+                    "flow": {
+                        "nodeId": "88742b54-6fd0-4d4e-ac88-1b62be83ccf8",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "539.3242444892155",
+                    "positionY": "-403.788628515999"
+                },
+                "parameters": {
+                    "text": {
+                        "link": {
+                            "nodeId": "4fc9d4b4-123c-4ecf-9371-d43f124e8562",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "e1708df6-d97a-4de6-a02a-773fa852e0a8",
+                "type": "debug/log/object",
+                "flows": {
+                    "flow": {
+                        "nodeId": "07327a55-1654-4f4e-8d8e-33c389d8853e",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "-639.6484372727087",
+                    "positionY": "552.881315514172"
+                },
+                "parameters": {
+                    "text": {
+                        "value": "data object from event payload: "
+                    },
+                    "payload": {
+                        "link": {
+                            "nodeId": "47f31f7d-aff5-4a9f-945f-84d46bff9628",
+                            "socket": "data"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "1148ec70-b578-4fb2-abee-927dff1f997a",
+                "type": "variables/get",
+                "metadata": {
+                    "positionX": "-132.14072350813058",
+                    "positionY": "267.37731963464074"
+                },
+                "configuration": {
+                    "variableId": "0b8310df-3a35-4a05-953f-2dd10c9e107a",
+                    "socketOutputs": [
+                        {
+                            "name": "operatorMessage",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "b9c63738-5ad6-418b-ac53-075d32a127ab",
+                "type": "logic/array/removeFirst",
+                "flows": {
+                    "flow": {
+                        "nodeId": "880039b8-48a0-4860-aae3-7ba093c8464b",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "207.05330563447137",
+                    "positionY": "-210.6901108272396"
+                },
+                "parameters": {
+                    "array": {
+                        "link": {
+                            "nodeId": "f27617a7-a0ec-473d-8e7a-6d34e7ef695f",
+                            "socket": "result"
+                        }
+                    }
+                },
+                "configuration": {
+                    "valueType": "string",
+                    "socketOutputs": [
+                        {
+                            "key": "Item",
+                            "name": "Item",
+                            "valueType": "string"
+                        }
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "valueTypes",
+                        "socketOutputs",
+                        "valueTypeOptions"
+                    ],
+                    "valueTypeOptions": {
+                        "values": [
+                            "string",
+                            "number",
+                            "float",
+                            "boolean",
+                            "object",
+                            "array"
+                        ],
+                        "socketName": "Item"
+                    }
+                }
+            },
+            {
+                "id": "89e907b0-531b-416c-8733-a4e261a1f0ea",
+                "type": "logic/object/destructure",
+                "metadata": {
+                    "positionX": "-628.7172072010374",
+                    "positionY": "406.11865717041997"
+                },
+                "parameters": {
+                    "object": {
+                        "link": {
+                            "nodeId": "47f31f7d-aff5-4a9f-945f-84d46bff9628",
+                            "socket": "data"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer",
+                        "float",
+                        "object"
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "authorId",
+                            "valueType": "string"
+                        }
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ]
+                }
+            },
+            {
+                "id": "47f31f7d-aff5-4a9f-945f-84d46bff9628",
+                "type": "logic/object/destructure",
+                "metadata": {
+                    "positionX": "-908.6545705847324",
+                    "positionY": "374.522497958381"
+                },
+                "parameters": {
+                    "object": {
+                        "link": {
+                            "nodeId": "75a90755-0379-4674-8845-89d0620cd365",
+                            "socket": "event"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer",
+                        "float",
+                        "object"
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "data",
+                            "valueType": "object"
+                        }
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ]
+                }
+            },
+            {
+                "id": "88742b54-6fd0-4d4e-ac88-1b62be83ccf8",
+                "type": "variables/set",
+                "flows": {
+                    "flow": {
+                        "nodeId": "99c91054-457a-4b6c-98c3-5d08c511d370",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "1203.2190522188064",
+                    "positionY": "-32.45801885949339"
+                },
+                "parameters": {
+                    "operatorWallet": {
+                        "link": {
+                            "nodeId": "f4031e3c-f9c1-4034-8361-60723b8e604d",
+                            "socket": "object"
+                        }
+                    }
+                },
+                "configuration": {
+                    "emitEvent": true,
+                    "variableId": "53b61585-c8e2-456d-b35b-abf67902b852",
+                    "socketInputs": [
+                        {
+                            "name": "operatorWallet",
+                            "valueType": "object"
+                        }
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "operatorWallet",
+                            "valueType": "object"
+                        }
+                    ],
+                    "valueTypeName": "object",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "socketInputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "f4031e3c-f9c1-4034-8361-60723b8e604d",
+                "type": "action/object/create",
+                "metadata": {
+                    "positionX": "896.7212141441144",
+                    "positionY": "-40.7076851125413"
+                },
+                "parameters": {
+                    "user_id": {
+                        "link": {
+                            "nodeId": "95b69194-6f1b-4376-839e-3a84ef0b8f68",
+                            "socket": "user_ID"
+                        }
+                    },
+                    "wallet_token": {
+                        "link": {
+                            "nodeId": "b9c63738-5ad6-418b-ac53-075d32a127ab",
+                            "socket": "Item"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketInputs": [
+                        {
+                            "name": "user_id",
+                            "valueType": "string"
+                        },
+                        {
+                            "name": "wallet_token",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer"
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "valueTypes",
+                        "valueTypeOptions"
+                    ]
+                }
+            },
+            {
+                "id": "64451159-1eaa-4cfd-923f-5074590e2dd9",
+                "type": "variables/set",
+                "flows": {
+                    "flow": {
+                        "nodeId": "e1708df6-d97a-4de6-a02a-773fa852e0a8",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "-936.1877025429667",
+                    "positionY": "15.052564367567754"
+                },
+                "parameters": {
+                    "operatorMessage": {
+                        "link": {
+                            "nodeId": "75a90755-0379-4674-8845-89d0620cd365",
+                            "socket": "content"
+                        }
+                    }
+                },
+                "configuration": {
+                    "emitEvent": true,
+                    "variableId": "0b8310df-3a35-4a05-953f-2dd10c9e107a",
+                    "socketInputs": [
+                        {
+                            "name": "operatorMessage",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "operatorMessage",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "socketInputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "11d550e9-9b18-4f55-a540-dd0a6fcfb8c8",
+                "type": "actions/http/fetch",
+                "metadata": {
+                    "positionX": "234.81773659223518",
+                    "positionY": "-849.3838326713121"
+                },
+                "parameters": {
+                    "url": {
+                        "value": "/balance"
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "f27617a7-a0ec-473d-8e7a-6d34e7ef695f",
+                "type": "logic/split/string",
+                "metadata": {
+                    "positionX": "197.00658842295866",
+                    "positionY": "-29.057007928625183"
+                },
+                "parameters": {
+                    "string": {
+                        "link": {
+                            "nodeId": "1148ec70-b578-4fb2-abee-927dff1f997a",
+                            "socket": "operatorMessage"
+                        }
+                    },
+                    "seperator": {
+                        "value": "/connect "
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "07327a55-1654-4f4e-8d8e-33c389d8853e",
+                "type": "variables/set",
+                "flows": {
+                    "flow": {
+                        "nodeId": "9bdb6382-0bd5-44c2-a665-8c4fd08e3705",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "-624.73479947084",
+                    "positionY": "186.72056941904953"
+                },
+                "parameters": {
+                    "discordChannel": {
+                        "link": {
+                            "nodeId": "9f4a8195-3368-4a3e-996e-09d5818bc192",
+                            "socket": "channel"
+                        }
+                    }
+                },
+                "configuration": {
+                    "emitEvent": false,
+                    "variableId": "8a132c30-238a-4f02-9364-c03cd7760104",
+                    "socketInputs": [
+                        {
+                            "name": "discordChannel",
+                            "valueType": "string"
+                        }
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "discordChannel",
+                            "valueType": "string"
+                        }
+                    ],
+                    "valueTypeName": "string",
+                    "variableNames": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "variableId",
+                        "socketOutputs",
+                        "socketInputs",
+                        "label",
+                        "valueTypeName"
+                    ]
+                }
+            },
+            {
+                "id": "9f4a8195-3368-4a3e-996e-09d5818bc192",
+                "type": "logic/object/destructure",
+                "metadata": {
+                    "positionX": "-908.6666044090924",
+                    "positionY": "227.01025204030475"
+                },
+                "parameters": {
+                    "object": {
+                        "link": {
+                            "nodeId": "75a90755-0379-4674-8845-89d0620cd365",
+                            "socket": "event"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketValues": [
+                        "string",
+                        "array",
+                        "boolean",
+                        "integer",
+                        "float",
+                        "object"
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "channel",
+                            "valueType": "string"
+                        }
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ]
+                }
+            },
+            {
+                "id": "48cb6062-d9c8-4179-9b7a-97b24865b96e",
+                "type": "discord/sendMessage",
+                "flows": {
+                    "flow": {
+                        "nodeId": "ff1ce811-d0c3-40d7-bc26-ad59c64e2524",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "-640.865357829926",
+                    "positionY": "-177.02132355423967"
+                },
+                "parameters": {
+                    "channel": {
+                        "link": {
+                            "nodeId": "88d65f23-97bb-4b9e-8adf-c2b723b8517d",
+                            "socket": "discordChannel"
+                        }
+                    },
+                    "content": {
+                        "value": "Hi this is CashCord. To send others in Discord ecash, please connect your existing Cashu (ecash) wallet: **/connect** "
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "0a748f9e-db2c-4cb2-b78e-d34cf9c935f4",
+                "type": "discord/sendMessage",
+                "metadata": {
+                    "positionX": "1363.9949127069472",
+                    "positionY": "-258.02787205039914"
+                },
+                "parameters": {
+                    "content": {
+                        "value": "A Cashu wallet has been created for you. You can check the balance by running ther **/balance** command."
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "109a1476-8343-4f52-9814-be2a61e73201",
+                "type": "flow/switch",
+                "flows": {
+                    "/tip": {
+                        "nodeId": "b0a636cb-0c67-4234-808d-b61f27ffdd76",
+                        "socket": "flow"
+                    },
+                    "/balance": {
+                        "nodeId": "11d550e9-9b18-4f55-a540-dd0a6fcfb8c8",
+                        "socket": "flow"
+                    },
+                    "/connect": {
+                        "nodeId": "b9c63738-5ad6-418b-ac53-075d32a127ab",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "-168.36521562931182",
+                    "positionY": "-127.54191894284483"
+                },
+                "parameters": {
+                    "string": {
+                        "link": {
+                            "nodeId": "5b434c4f-4cd4-4e1d-85e0-3ea5fd2a9dee",
+                            "socket": "command"
+                        }
+                    }
+                },
+                "configuration": {
+                    "socketValues": [
+                        "flow"
+                    ],
+                    "socketOutputs": [
+                        {
+                            "name": "/balance",
+                            "valueType": "flow"
+                        },
+                        {
+                            "name": "/connect",
+                            "valueType": "flow"
+                        },
+                        {
+                            "name": "/tip",
+                            "valueType": "flow"
+                        },
+                        {
+                            "name": "/receive",
+                            "valueType": "flow"
+                        }
+                    ],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "textEditorOptions",
+                        "textEditorData",
+                        "socketValues"
+                    ]
+                }
+            },
+            {
+                "id": "5b434c4f-4cd4-4e1d-85e0-3ea5fd2a9dee",
+                "type": "logic/string/parseCommand",
+                "metadata": {
+                    "positionX": "-622.9083374090864",
+                    "positionY": "-8.600922762529649"
+                },
+                "parameters": {
+                    "string": {
+                        "link": {
+                            "nodeId": "75a90755-0379-4674-8845-89d0620cd365",
+                            "socket": "content"
+                        }
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "2b5941f0-8a37-4f6e-ad34-b69076890df9",
+                "type": "actions/http/fetch",
+                "metadata": {
+                    "positionX": "937.7717744652712",
+                    "positionY": "1423.9001535732966"
+                },
+                "parameters": {
+                    "url": {
+                        "value": "/send"
+                    }
+                },
+                "configuration": {}
+            },
+            {
+                "id": "cb6d7301-669d-49b9-902c-5fa1f8e17d49",
+                "type": "magick/sendMessage",
+                "metadata": {
+                    "positionX": "927.0161160650259",
+                    "positionY": "-678.3841877612383"
+                },
+                "configuration": {}
+            },
+            {
+                "id": "75a90755-0379-4674-8845-89d0620cd365",
+                "type": "magick/onMessage",
+                "flows": {
+                    "flow": {
+                        "nodeId": "64451159-1eaa-4cfd-923f-5074590e2dd9",
+                        "socket": "flow"
+                    }
+                },
+                "metadata": {
+                    "positionX": "-1298.509449581688",
+                    "positionY": "40.691282022742485"
+                },
+                "configuration": {
+                    "eventState": [],
+                    "hiddenProperties": [
+                        "hiddenProperties",
+                        "eventState"
+                    ],
+                    "eventStateProperties": [
+                        "connector",
+                        "client",
+                        "channel",
+                        "agentId",
+                        "sender"
+                    ]
+                }
+            }
+        ],
+        "variables": [
+            {
+                "id": "b82454fa-6307-431d-a68b-e6158a51144d",
+                "name": "tipPayload",
+                "initialValue": "{}",
+                "valueTypeName": "object"
+            },
+            {
+                "id": "85f81dbf-c18c-4fdb-a33b-5a1203e6bf7e",
+                "name": "user_ID",
+                "initialValue": "",
+                "valueTypeName": "string"
+            },
+            {
+                "id": "53b61585-c8e2-456d-b35b-abf67902b852",
+                "name": "operatorWallet",
+                "initialValue": "{}",
+                "valueTypeName": "object"
+            },
+            {
+                "id": "0b8310df-3a35-4a05-953f-2dd10c9e107a",
+                "name": "operatorMessage",
+                "initialValue": "",
+                "valueTypeName": "string"
+            },
+            {
+                "id": "8a132c30-238a-4f02-9364-c03cd7760104",
+                "name": "discordChannel",
+                "initialValue": "",
+                "valueTypeName": "string"
+            }
+        ],
+        "graphInputs": [],
+        "customEvents": [],
+        "graphOutputs": []
+    }
+}
